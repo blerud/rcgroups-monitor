@@ -1,0 +1,24 @@
+{
+	"name" : "rcgroups-monitor",
+	"version" : "0.0.1",
+	"description" : "monitor rcgroups classified page",
+	"background" : {
+		"scripts": ["js/background.js"],
+		"persistent": true
+	},
+	"permissions": [
+		"tabs",
+		"notifications",
+		"*://www.rcgroups.com/aircraft-electric-multirotor-fs-w-733/",
+		"*://static.rcgroups.net/forums/attachments/*"
+	],
+	"content_scripts": [{
+			"matches": ["*://www.rcgroups.com/aircraft-electric-multirotor-fs-w-733/"],
+			"js": ["js/monitor.js"],
+			"run_at": "document_idle"
+	}],
+	"web_accessible_resources": [
+		"white.png"
+	],
+	"manifest_version": 2
+}
