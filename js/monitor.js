@@ -1,15 +1,13 @@
-var url = "http://www.rcgroups.com/aircraft-electric-multirotor-fs-w-733/";
-
 function extract() {
 	page = document.getElementById("threadbits_forum_733").children[0];
 
 	picUrl = page.getElementsByClassName("fsw-thumbnail")[0].getElementsByTagName("div")[0].style.background.split(" ")[0];
 	picUrl = picUrl.substring(4, picUrl.length-1);
-	itemUrl = page.getElementsByClassName("fsw-thumbnail")[0].getElementsByTagName("div")[0].children[0].href;
+	itemId = page.children[1].id;
+	itemIdNum = itemId.split("_")[2];
+	itemUrl = "http://www.rcgroups.com/forums/showthread.php?t=" + itemIdNum;
 
-	itemTitle = page.getElementsByClassName("forumtitle")[0].text;
-	if(itemTitle == "" || itemTitle == 0 || itemTitle == null)
-		itemTitle = page.getElementsByClassName("fsw-title")[0].text;
+	itemTitle = document.getElementById("thread_title_" + itemIdNum).text;
 
 	itemPrice = "";
 	itemShipping = "";
@@ -28,10 +26,9 @@ function extract() {
 }
 
 function poll() {
-	var objectUrl = document.getElementById("threadbits_forum_733").children[0]
-		.getElementsByClassName("fsw-thumbnail")[0].getElementsByTagName("div")[0].children[0].href;;
-	if(localStorage["firstobject"] != objectUrl) {
-		localStorage["firstobject"] = objectUrl
+	var objectId = document.getElementById("threadbits_forum_733").children[0].children[1].id;
+	if(localStorage["firstobject"] != objectId) {
+		localStorage["firstobject"] = objectId;
 		details = extract();
 		alertEvent(details);
 	}

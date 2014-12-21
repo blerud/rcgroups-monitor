@@ -3,10 +3,12 @@ function startupInject() {
 		url: "*://www.rcgroups.com/aircraft-electric-multirotor-fs-w-733/"
 		},
 		function(tabs) {
-			for(var i in tabs) {
-				chrome.tabs.reload(tabs[i].id);
-				chrome.tabs.executeScript(tabs[i].id, {file: "monitor.js"});
-			}
+			chrome.windows.getCurrent(function(window) {
+				if(!tabs[0].active || !window.focused) {
+					chrome.tabs.reload(tabs[0].id);
+					chrome.tabs.executeScript(tabs[0].id, {file: "js/monitor.js"});
+				}
+			});
 		}
 	);
 }
@@ -18,7 +20,7 @@ function alertUser(message) {
 		message: message.itemPrice + " + " + message.itemShipping,
 		iconUrl: message.picUrl
 	};
-	if(notifOptions.iconUrl.lastIndexOf("rgb", 0) === 0)
+	if(notifOptions.iconUrl.length === 3)
 		notifOptions.iconUrl = "white.png";
 	if(message.itemPrice == "" && message.itemShipping == "")
 		notifOptions.message = "";
@@ -37,7 +39,7 @@ chrome.runtime.onMessage.addListener(function(message, sender) {
 })
 
 localStorage["firstobject"] = "";
-var poll_interval = 30;
+var poll_interval = 5;
 setInterval(function() {
 	startupInject();
 }, poll_interval * 1000);
