@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener(function(message, sender) {
 })
 
 localStorage["firstobject"] = "";
-var poll_interval = 5;
+var poll_interval = 30;
 setInterval(function() {
 	startupInject();
 }, poll_interval * 1000);
