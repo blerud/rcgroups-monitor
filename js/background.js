@@ -13,6 +13,7 @@ function startupInject() {
 	);
 }
 
+var url = "";
 function alertUser(message) {
 	var notifOptions = {
 		type: "basic",
@@ -20,26 +21,30 @@ function alertUser(message) {
 		message: message.itemPrice + " + " + message.itemShipping,
 		iconUrl: message.picUrl
 	};
+	url = message.itemUrl;
 	if(notifOptions.iconUrl.length === 3)
 		notifOptions.iconUrl = "white.png";
 	if(message.itemPrice == "" && message.itemShipping == "")
 		notifOptions.message = "";
-	chrome.notifications.onClicked.addListener(function(notfid) {
-		chrome.tabs.create({
-			url: message.itemUrl,
-			active: true
-		});
-	})
+	if(message.wanted)
+		notifOptions.message = "Wanted " + notifOptions.message;
 	chrome.notifications.clear("userAlert", function(notifId){});
 	chrome.notifications.create("userAlert", notifOptions, function(notifId){});
 }
+
+chrome.notifications.onClicked.addListener(function(notfid) {
+	chrome.tabs.create({
+		url: url,
+		active: true
+	});
+});
 
 chrome.runtime.onMessage.addListener(function(message, sender) {
 	alertUser(message);
 })
 
 localStorage["firstobject"] = "";
-var poll_interval = 30;
+var poll_interval = 10;
 setInterval(function() {
 	startupInject();
 }, poll_interval * 1000);

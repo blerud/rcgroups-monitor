@@ -16,12 +16,17 @@ function extract() {
 		itemShipping = page.getElementsByClassName("fsw-price")[0].children[2].innerHTML.trim();
 	}
 
+	wanted = false;
+	if(page.getElementsByClassName("fsw-category")[0].getElementsByTagName("a")[0].children[0].innerHTML == "Wanted") 
+		wanted = true;
+
 	return {
 		picUrl: picUrl,
 		itemUrl: itemUrl,
 		itemTitle: itemTitle,
 		itemPrice: itemPrice,
-		itemShipping: itemShipping
+		itemShipping: itemShipping,
+		wanted: wanted
 	};
 }
 
